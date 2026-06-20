@@ -13,6 +13,7 @@ let searchQuery = "";
 let sortMode    = "default";
 let CONFIG      = {};
 let activePublisher = "all";
+let activeStatus    = "all";
 
 // ===== ELEMEN =====
 const grid        = document.getElementById("bookGrid");
@@ -178,6 +179,27 @@ function buildPublishers(books) {
   });
 }
 
+function buildStatuses(books) {
+  const select = document.getElementById("statusSelect");
+  if (!select) return;
+
+  const set = new Set();
+  books.forEach(b => {
+    const v = String(b["Status"] || "").trim().toUpperCase();
+    if (v) set.add(v);
+  });
+
+  // Hapus opsi lama kecuali "Semua status"
+  [...select.options].slice(1).forEach(o => o.remove());
+
+  [...set].sort((a, b) => a.localeCompare(b, "id")).forEach(stat => {
+    const opt = document.createElement("option");
+    opt.value = stat;
+    opt.textContent = statusLabel(stat);
+    select.appendChild(opt);
+  });
+}
+
 function onCatClick(btn, cat) {
   activeCat = cat;
   catScroll.querySelectorAll(".cat-chip").forEach(c => c.classList.remove("active"));
@@ -208,7 +230,10 @@ function applyFilters() {
     const matchPublisher = activePublisher === "all"
       || String(b["Penerbit"] || "").trim() === activePublisher;
 
-    return matchSearch && matchCat && matchPublisher;
+    const matchStatus = activeStatus === "all"
+      || String(b["Status"] || "").trim().toUpperCase() === activeStatus;
+
+    return matchSearch && matchCat && matchPublisher && matchStatus;
   });
 
   result = sortBooks(result);
@@ -355,6 +380,7 @@ async function fetchBooks() {
 
     buildCategories(allBooks);
     buildPublishers(allBooks);
+    buildStatuses(allBooks);
     applyFilters();
   } catch (err) {
     loadingEl.style.display = "none";
@@ -388,6 +414,15 @@ function initCatalog(config) {
   if (publisherSelect) {
     publisherSelect.addEventListener("change", e => {
       activePublisher = e.target.value;
+      currentPage = 1;
+      applyFilters();
+    });
+  }
+
+  const statusSelect = document.getElementById("statusSelect");
+  if (statusSelect) {
+    statusSelect.addEventListener("change", e => {
+      activeStatus = e.target.value;
       currentPage = 1;
       applyFilters();
     });
