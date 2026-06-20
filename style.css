@@ -423,6 +423,58 @@ body {
 
 .category-scroll::-webkit-scrollbar { display: none; }
 
+.category-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.category-wrap .category-scroll {
+  flex: 1;
+  scroll-behavior: smooth;
+  cursor: grab;
+}
+
+.category-wrap .category-scroll:active {
+  cursor: grabbing;
+}
+
+.cat-arrow {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--body);
+  cursor: pointer;
+  transition: border-color .12s, color .12s;
+}
+
+.cat-arrow:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.cat-arrow:disabled {
+  opacity: .3;
+  cursor: default;
+}
+
+.cat-arrow:disabled:hover {
+  border-color: var(--line);
+  color: var(--body);
+}
+
+/* Sembunyikan panah di layar sentuh (mobile/touch) karena sudah bisa swipe */
+@media (hover: none) and (pointer: coarse) {
+  .cat-arrow { display: none; }
+}
+
 .cat-chip {
   flex-shrink: 0;
   padding: 5px 14px;

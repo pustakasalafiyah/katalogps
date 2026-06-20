@@ -105,6 +105,58 @@ function buildCategories(books) {
   });
 }
 
+// ===== CATEGORY SCROLL: arrow buttons + mouse drag =====
+function initCategoryScrollControls() {
+  const wrap   = catScroll;
+  const btnL   = document.getElementById("catArrowLeft");
+  const btnR   = document.getElementById("catArrowRight");
+  if (!wrap || !btnL || !btnR) return;
+
+  const SCROLL_STEP = 200;
+
+  function updateArrowState() {
+    btnL.disabled = wrap.scrollLeft <= 0;
+    btnR.disabled = wrap.scrollLeft >= wrap.scrollWidth - wrap.clientWidth - 1;
+  }
+
+  btnL.addEventListener("click", () => {
+    wrap.scrollBy({ left: -SCROLL_STEP, behavior: "smooth" });
+  });
+
+  btnR.addEventListener("click", () => {
+    wrap.scrollBy({ left: SCROLL_STEP, behavior: "smooth" });
+  });
+
+  wrap.addEventListener("scroll", updateArrowState);
+  window.addEventListener("resize", updateArrowState);
+
+  // Drag-to-scroll pakai mouse (untuk PC non-touch)
+  let isDown = false, startX = 0, startScroll = 0;
+
+  wrap.addEventListener("mousedown", e => {
+    isDown = true;
+    startX = e.pageX;
+    startScroll = wrap.scrollLeft;
+  });
+
+  window.addEventListener("mouseup", () => { isDown = false; });
+
+  wrap.addEventListener("mousemove", e => {
+    if (!isDown) return;
+    e.preventDefault();
+    wrap.scrollLeft = startScroll - (e.pageX - startX);
+  });
+
+  // Scroll pakai mouse wheel (vertical wheel → horizontal scroll)
+  wrap.addEventListener("wheel", e => {
+    if (e.deltaY === 0) return;
+    e.preventDefault();
+    wrap.scrollLeft += e.deltaY;
+  }, { passive: false });
+
+  updateArrowState();
+}
+
 function buildPublishers(books) {
   const select = document.getElementById("publisherSelect");
   if (!select) return;
@@ -344,6 +396,8 @@ function initCatalog(config) {
   // Chip "Semua"
   document.querySelector(".cat-chip[data-cat='all']")
     .addEventListener("click", function () { onCatClick(this, "all"); });
+
+  initCategoryScrollControls();
 
   fetchBooks();
   setInterval(fetchBooks, 5 * 60 * 1000);

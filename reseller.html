@@ -92,8 +92,16 @@
             </select>
         </div>
       </div>
-      <div class="category-scroll" id="categoryScroll">
-        <button class="cat-chip active" data-cat="all">Semua</button>
+      <div class="category-wrap">
+        <button class="cat-arrow cat-arrow-left" id="catArrowLeft" aria-label="Geser kiri">
+          <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M12 5l-5 5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="category-scroll" id="categoryScroll">
+          <button class="cat-chip active" data-cat="all">Semua</button>
+        </div>
+        <button class="cat-arrow cat-arrow-right" id="catArrowRight" aria-label="Geser kanan">
+          <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
   </div>
