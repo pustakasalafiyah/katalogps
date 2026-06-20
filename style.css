@@ -790,6 +790,21 @@ body {
 /* ============================================================
    RESPONSIVE
    ============================================================ */
+@media (max-width: 900px) {
+  .toolbar-row2 {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .filter-select,
+  .sort-select {
+    font-size: 0.8rem;
+    padding: 10px 10px;
+  }
+}
+
 @media (max-width: 600px) {
   .toolbar { top: 57px; }
 
@@ -825,15 +840,16 @@ body {
 
   .toolbar-row2 {
     width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
   }
 
   .filter-select,
   .sort-select {
-    flex: 1;
-    font-size: 0.78rem;
-    padding: 10px 10px;
+    font-size: 0.75rem;
+    padding: 10px 8px;
+    min-width: 0;
   }
 }
 
@@ -905,6 +921,10 @@ body {
 }
 
 .reseller-page .sort-select:focus {
+  border-color: #2563EB;
+}
+
+.reseller-page .filter-select:focus {
   border-color: #2563EB;
 }
 
@@ -998,34 +1018,42 @@ body {
   right: 14px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--muted);
+  width: 24px;
+  height: 24px;
   display: flex;
-  padding: 4px;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+  opacity: 1;
+  transition: opacity .15s;
 }
+
+.pw-toggle:hover { opacity: 0.6; }
 
 .pw-btn {
-  font-family: var(--font);
-  font-size: 0.93rem;
-  font-weight: 700;
   width: 100%;
-  padding: 13px;
-  background: #1E3A6E;
-  color: #fff;
+  padding: 12px 24px;
+  margin-bottom: 10px;
   border: none;
   border-radius: var(--radius);
+  background: var(--green);
+  color: #fff;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: background .15s;
-  margin-bottom: 12px;
 }
 
-.pw-btn:hover { background: #2563EB; }
+.pw-btn:hover { background: #16A34A; }
 
 .pw-error {
   font-size: 0.8rem;
   color: var(--red-tx);
   text-align: center;
-  min-height: 18px;
+  min-height: 1.2em;
 }
